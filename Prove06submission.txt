@@ -1,0 +1,38 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://lit-journey-32881.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/shadowspawn42/cse341-s2020
+
+3. Briefly list and describe the elements of the application that are functioning.
+I got everything for the assignment working. 
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+Everything for the assignment is working.
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+I loved learning about how to get URLs to work on the heroku servers. I wanted to make
+sure that the password resetting links worked on the server and on my home environment.
+It took some time to realize that I could just do the same thing that we do in the base
+index file of having an "or" statement. I felt so happy when I got it to work.
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+I like it as it is.
+
+7. Please select the category you feel best describes your assignment:
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+5
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+Fixed a few errors with editing and updating products that I found that doesn't happen often
+but still occurs once in a while.
+I also started the prosess of adding an out of stock state for the products.
+I also put another intersting fact.
+I think I finally understand how to do the routing.
