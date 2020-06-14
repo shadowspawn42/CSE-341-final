@@ -22,7 +22,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
 
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://Mitchell:LeaderShip2012@cluster0-z1b1b.mongodb.net/prove06?retryWrites=true&w=majority";
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://Mitchell:LeaderShip2012@cluster0-z1b1b.mongodb.net/Kitchen-Assistent?retryWrites=true&w=majority";
 
 const app = express();
 

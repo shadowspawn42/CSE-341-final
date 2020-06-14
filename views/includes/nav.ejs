@@ -3,28 +3,43 @@
     <ul class="nav navbar-nav">
       <li><a href="/" style="padding: 0 2rem; margin: 0"><img class="logo" src="/images/BYUI-logo.png" alt="BYU Idaho logo"></a></li>
       <li class="<%= path === '/' ? 'active' : ''%>">
-        <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
+        <a href="/"><span class="glyphicon glyphicon-home"></span> Home</a> 
       </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Team Activities <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li class="<%= path === '/ta01' ? 'active' : ''%>"><a href="/teamActivites/ta01">TA01</a></li>
-            <li class="<%= path === '/ta02' ? 'active' : ''%>"><a href="/teamActivites/ta02">TA02</a></li>
-            <li class="<%= path === '/ta03' ? 'active' : ''%>"><a href="/teamActivites/ta03">TA03</a></li>
-            <li class="<%= path === '/ta04' ? 'active' : ''%>"><a href="/teamActivites/ta04">TA04</a></li>
-            <li class="<%= path === '/ta05' ? 'active' : ''%>"><a href="/teamActivites/ta05">TA05</a></li>
-          </ul>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Prove <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li class="<%= path === '/prove02' ? 'active' : ''%>"><a href="/proveAssignments/prove02">Prove02</a></li>
-            <li class="<%= path === '/prove03' ? 'active' : ''%>"><a href="/proveAssignments/prove03">Prove03</a></li>
-            <li class="<%= path === '/prove04' ? 'active' : ''%>"><a href="/proveAssignments/prove04">Prove04</a></li>
-            <li class="<%= path === '/prove05' ? 'active' : ''%>"><a href="/proveAssignments/prove04">Prove05</a></li>
-            <li class="<%= path === '/prove06' ? 'active' : ''%>"><a href="/proveAssignments/prove04">Prove06</a></li>
-          </ul>
-      </li>
+      <li>
+        <a class="<%= path === '/' ? 'active' : '' %>" href="/proveAssignments/prove04">Recipes</a>
+      </li>      
+      <li>
+        <a class="<%= path === '/products' ? 'active' : '' %>" href="/proveAssignments/prove04/products">Search</a>
+      </li>      
+        <% if (isAuthenticated) { %>
+          <li>
+            <a class="<%= path === '/cart' ? 'active' : '' %>" href="/proveAssignments/prove04/cart">Favorite Recipes</a>
+          </li>   
+          <li> 
+            <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/proveAssignments/prove04/admin/add-product">Add Recipe</a>
+          </li>
+          <li>  
+                <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/proveAssignments/prove04/admin/products">Edit Recipes</a>
+          </li>  
+            <% } %>
+        
+            <% if (!isAuthenticated) { %>
+              <li>  
+                <a class="<%= path === '/login' ? 'active' : '' %>" href="/proveAssignments/prove04/login">Login</a>
+              </li>
+              <li> 
+                <a class="<%= path === '/signup' ? 'active' : '' %>" href="/proveAssignments/prove04/signup">Signup</a>
+              </li>  
+            <% } else { %>
+                <li style="margin-top: 1rem;">
+                    <form action="/proveAssignments/prove04/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            <% } %>
+      
+      
     </ul>
   </div>
 </nav>

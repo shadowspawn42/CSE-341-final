@@ -50,8 +50,8 @@ exports.getIndex = (req, res, next) => {
     .then(products => {
       res.render('pages/prove/prove04/shop/index', {
         prods: products,
-        pageTitle: 'Shop',
-        path: '/'
+        pageTitle: 'Recipes',
+        path: '/prove04'
       });
     })
     .catch(err => {

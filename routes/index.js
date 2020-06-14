@@ -1,15 +1,14 @@
 const express = require("express");
 const routes = express.Router();
 
-const teamRoutes = require('./teamRoutes');
 const proveRoutes = require('./proveRoutes');
 
 
-routes.use('/teamActivites', teamRoutes)
+routes
     .use('/proveAssignments', proveRoutes)
     .get('/', (req, res, next) => {
         // This is the primary index, always handled last. 
-        res.render('pages/index', {title: 'Welcome to my CSE341 repo', path: '/'});
+        res.render('pages/index', {title: 'Welcome to Kitchen Assistent', path: '/'});
        })
     .use((req, res, next) => {
         // 404 page
