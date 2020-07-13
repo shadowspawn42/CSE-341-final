@@ -14,24 +14,18 @@
                 <ul class="cart__item-list">
                     <% products.forEach(p => { totalPrice += (p.quantity * p.productId.price) %>
                         <li class="cart__item">
-                            <h1><%= p.productId.title %></h1>
-                            <h2>Quantity: <%= p.quantity %></h2>
+                            <h1><%= p.productId.name %></h1>
+                            <a href="/proveAssignments/prove04/products/<%= p.productId._id %>">Details</a>
                             <form action="/proveAssignments/prove04/cart-delete-item" method="POST">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <input type="hidden" value="<%= p.productId._id %>" name="productId">
                                 <button class="btn danger" type="submit">Delete</button>
                             </form>
-                        </li>
+                        
                     <% }) %>
                 </ul>
                 <hr>
-                <div class="centered">
-                    <h3>Total Price of Cart: <%= totalPrice %></h3>
-                    <form action="/proveAssignments/prove04/create-order" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="btn">Order Now!</button>
-                    </form>
-                </div>
+                
                 
             <% } else { %>
                 <h1>No Recipes Favorited!</h1>

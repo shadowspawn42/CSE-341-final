@@ -7,19 +7,20 @@
 
     <body>
         <% include ../../../../includes/nav.ejs %>
-        
+
         <main class="centered">
-            <h1><%= product.title %></h1>
+            <h1><%= product.name %></h1>
             <hr>
             <div class="image">
-                <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                <img src="<%= product.imageUrl %>" alt="<%= product.name %>">
             </div>
             <div style="max-width: 60rem; margin-right: auto; margin-left: auto;">
-                <h2>$<%= product.price %></h2>
-                <h3>Publisher: <%= product.publisher %></h3>
-                <h3>Developer: <%= product.developer %></h3>
-                <h4>ESRB Rating: <%= product.esrb %></h3>
-                <p><%= product.description %></p>
+                <h3>Ingredents:</h3>
+                <% for (let ingredents of product.ingredent) { %>
+                    <p><%= ingredents %></p>
+                <% } %>
+                <h3>Directions:</h3>
+                <p><%= product.instruction %></p>
                 <%- include('../includes/add-to-cart.ejs') %>
             </div>
         </main>

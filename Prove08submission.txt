@@ -1,0 +1,20 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://lit-journey-32881.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/shadowspawn42/CSE-341-final
+
+3. What aspect of your project did you work on this week?
+I worked on the frontend appearance and navigation. All but the add recipe page has information
+dealing with recipes. I am not going to change anything for that page until I start working
+on the database part just so I can keep things in order until then.
+
+4. Are you on track with your project development plan?
+Yes I am. 
+
+5. What concerns do you have about your project?
+At this point I don't really have any concerns, I know what I am working on and I know
+what I need to do for the next little while.

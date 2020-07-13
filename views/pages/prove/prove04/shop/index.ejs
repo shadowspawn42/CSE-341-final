@@ -24,16 +24,14 @@
                 <% for (let product of prods) { %>
                     <article class="card product-item">
                         <header class="card__header">
-                            <h3 style="text-align: center;"><%= product.title %></h1>
+                            <h3 style="text-align: center;"><%= product.name %></h1>
                         </header>
                         <div class="card__image">
                             <img src="<%= product.imageUrl %>"
-                                alt="<%= product.title %>">
+                                alt="<%= product.name %>">
                         </div>
                         <div class="card__content" style="margin-bottom: -2rem;">
-                            <h2 class="product__price">$<%= product.price %></h2>
-                            <h4 class="product__description">Publisher: <%= product.publisher %></p>
-                            <h4 class="product__description">Developer: <%= product.developer %></p>
+                            <h4 class="product__description">Total Time: <%= product.totalTime %></p>
                         </div>
                         <div class="card__actions">
                                 <a href="/proveAssignments/prove04/products/<%= product._id %>" class="btn">Details</a>
@@ -41,6 +39,23 @@
                         </div>
                     </article>
                 <% } %>
+            </div>
+            <div class="text-center">
+                <section class="pagination">
+                    <% if (currentPage !== 1 && previousPage !== 1) { %>
+                        <a href="?page=1">1</a>
+                    <% } %>
+                    <% if (hasPreviousPage) { %>
+                        <a href="?page=<%= previousPage %>"><%= previousPage %></a>
+                    <% } %>
+                    <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+                    <% if (hasNextPage) { %>
+                        <a href="?page=<%= nextPage %>"><%= nextPage %></a>
+                    <% } %>
+                    <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+                        <a href="?page=<%= lastPage %>"><%= lastPage %></a>
+                    <% } %>
+                </section>
             </div>
         <% } else { %>
             <h1>No Recipes Found!</h1>

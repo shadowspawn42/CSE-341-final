@@ -1,14 +1,72 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
+const product = require('../models/product');
+const { db } = require('../models/product');
+
+const RECIPES_PER_PAGE = 3;
 
 exports.getProducts = (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
   Product.find()
+    .countDocuments()
+    .then(numRecipes => {
+      totalItems = numRecipes;
+      return Product.find()
+        .skip((page - 1) * RECIPES_PER_PAGE)
+        .limit(RECIPES_PER_PAGE);
+    })
     .then(products => {
       res.render('pages/prove/prove04/shop/product-list', {
         prods: products,
         pageTitle: 'All Products',
         path: '/products',
-        isAuthenticated: req.session.isLoggedIn
+        isAuthenticated: req.session.isLoggedIn,
+        currentPage: page,
+        hasNextPage: RECIPES_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / RECIPES_PER_PAGE)
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.postProducts = (req, res, next) => {
+  const searchIngred = req.query.ingredient;
+
+  const regex = new RegExp(escapeRegex(req.body.ingredient), 'gi');
+
+  console.log(regex);
+
+  const page = +req.query.page || 1;
+  let totalItems;
+  Product.find({ingredent: regex})
+  .countDocuments()
+    .then(numRecipes => {
+      totalItems = numRecipes;
+      console.log(totalItems);
+      return Product.find({ingredent: regex})
+        .skip((page - 1) * RECIPES_PER_PAGE)
+        .limit(RECIPES_PER_PAGE);
+    })
+    .then(products => {
+      res.render('pages/prove/prove04/shop/product-list', {
+        prods: products,
+        pageTitle: 'All Products',
+        path: '/products',
+        isAuthenticated: req.session.isLoggedIn,
+        currentPage: page,
+        hasNextPage: RECIPES_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / RECIPES_PER_PAGE)
       });
     })
     .catch(err => {
@@ -33,7 +91,7 @@ exports.getProduct = (req, res, next) => {
     .then(product => {
       res.render('pages/prove/prove04/shop/product-detail', {
         product: product,
-        pageTitle: product.title,
+        pageTitle: product.name,
         path: '/products',
         isAuthenticated: req.session.isLoggedIn
       });
@@ -46,12 +104,27 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
   Product.find()
+    .countDocuments()
+    .then(numRecipes => {
+      totalItems = numRecipes;
+      return Product.find()
+        .skip((page - 1) * RECIPES_PER_PAGE)
+        .limit(RECIPES_PER_PAGE);
+    })
     .then(products => {
       res.render('pages/prove/prove04/shop/index', {
         prods: products,
         pageTitle: 'Recipes',
-        path: '/prove04'
+        path: '/prove04',
+        currentPage: page,
+        hasNextPage: RECIPES_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / RECIPES_PER_PAGE)
       });
     })
     .catch(err => {
@@ -67,7 +140,7 @@ exports.getCart = (req, res, next) => {
         const products = user.cart.items;
           res.render('pages/prove/prove04/shop/cart', {
             path: '/cart',
-            pageTitle: 'Your Cart',
+            pageTitle: 'Your Favorites',
             products: products,
             isAuthenticated: req.session.isLoggedIn
           });
@@ -149,4 +222,8 @@ exports.getOrders = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+};
+
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };

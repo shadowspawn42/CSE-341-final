@@ -3,19 +3,23 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  },
-  description: {
+  ingredent: [{
+    type: String,
+    required: false
+  }],
+  instruction: {
     type: String,
     required: true
   },
   imageUrl: {
+    type: String,
+    required: true
+  },
+  totalTime: {
     type: String,
     required: true
   },
@@ -24,21 +28,6 @@ const productSchema = new Schema({
     ref: "User",
     required: true
   },
-  publisher: {
-    type: String,
-    required: true
-  },
-  developer: {
-    type: String,
-    required: true
-  },
-  esrb: {
-    type: String,
-    required: true
-  },
-  stock: {
-    type: Boolean
-  }
 });
 
 module.exports = mongoose.model('Product', productSchema);

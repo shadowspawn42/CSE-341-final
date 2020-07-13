@@ -1,6 +1,8 @@
 const Product = require('../models/product');
 const { validationResult } =  require("express-validator/check");
 
+const RECIPES_PER_PAGE = 3;
+
 
 exports.getAddProduct = (req, res, next) => {
   res.render('pages/prove/prove04/admin/edit-product', {
@@ -16,13 +18,12 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   console.log(req.user);
-  const title = req.body.title;
+  const name = req.body.name;
   const imageUrl = req.body.imageUrl;
-  const price = req.body.price;
-  const description = req.body.description;
-  const publisher = req.body.publisher;
-  const developer = req.body.developer;
-  const esrb = req.body.esrb;
+  const instruction = req.body.instruction;
+  const ingredients = req.body.ingredent;
+  const time = req.body.time;
+
 
   const errors = validationResult(req);
     if (!errors.isEmpty()){
@@ -32,13 +33,13 @@ exports.postAddProduct = (req, res, next) => {
         path: '/admin/add-product',
         editing: false,
         errorMessage: errors.array()[0].msg,
-        product: {title: title, price: price, description: description, imageUrl: imageUrl, userId: req.user, developer: developer, publisher: publisher, esrb: esrb},
+        product: {name: name, instruction: instruction, time: time, userId: req.user},
         hasError: true,
         validationErrors: errors.array()
       });
     }
 
-  const product = new Product ({title: title, price: price, description: description, imageUrl: imageUrl, userId: req.user, developer: developer, publisher: publisher, esrb: esrb});
+  const product = new Product ({name: name, imageUrl: imageUrl, instruction: instruction, totalTime: time, ingredent: ingredients, userId: req.user});
   product
     .save()
     .then(result => {
@@ -83,13 +84,11 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  const updatedTitle = req.body.title;
-  const updatedPrice = req.body.price;
+  const updatedName = req.body.name;
+  const updatedTime = req.body.time;
   const updatedImageUrl = req.body.imageUrl;
-  const updatedDesc = req.body.description;
-  const updatedDeveloper = req.body.developer;
-  const updatedPublisher = req.body.publisher;
-  const updatedESRB = req.body.esrb;
+  const updatedInstruc = req.body.instruction;
+  const updatedIngredents = req.body.ingredent;
 
   const errors = validationResult(req);
     if (!errors.isEmpty()){
@@ -99,7 +98,7 @@ exports.postEditProduct = (req, res, next) => {
         path: '/admin/add-product',
         editing: true,
         errorMessage: errors.array()[0].msg,
-        product: {title: updatedTitle, price: updatedPrice, description: updatedDesc, imageUrl: updatedImageUrl, userId: req.user, developer: updatedDeveloper, publisher: updatedPublisher, esrb: updatedESRB, _id: prodId},
+        product: {name: updatedName, totalTime: updatedTime, instruction: updatedInstruc, ingredent: updatedIngredents, _id: prodId},
         hasError: true,
         validationErrors: errors.array()
       });
@@ -107,13 +106,14 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(prodId)
     .then(product => {
-      product.title = updatedTitle;
-      product.price = updatedPrice;
-      product.description = updatedDesc;
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/');
+      }
+      product.name = updatedName;
+      product.totalTime = updatedTime;
+      product.instruction = updatedInstruc;
       product.imageUrl = updatedImageUrl;
-      product.developer = updatedDeveloper;
-      product.publisher = updatedPublisher;
-      product.esrb = updatedESRB;
+      product.ingredent = updatedIngredents;
       return product.save()
     })
     .then(result => {
@@ -128,13 +128,28 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
+  const page = +req.query.page || 1;
+  let totalItems;
   Product.find()
+    .countDocuments()
+    .then(numRecipes => {
+      totalItems = numRecipes;
+      return Product.find()
+        .skip((page - 1) * RECIPES_PER_PAGE)
+        .limit(RECIPES_PER_PAGE);
+    })
     .then(products => {
       res.render('pages/prove/prove04/admin/products', {
         prods: products,
         pageTitle: 'Admin Products',
         path: '/admin/products',
-        isAuthenticated: req.session.isLoggedIn
+        isAuthenticated: req.session.isLoggedIn,
+        currentPage: page,
+        hasNextPage: RECIPES_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / RECIPES_PER_PAGE)
       });
     })
     .catch(err => {
@@ -148,6 +163,9 @@ exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findByIdAndRemove(prodId)
     .then(() => {
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/');
+      }
       console.log('DESTROYED PRODUCT');
       res.redirect('products');
     })

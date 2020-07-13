@@ -17,22 +17,10 @@ router.get('/products', isAuth, adminController.getProducts);
 // /admin/add-product => POST
 router.post('/add-product', isAuth, 
     [
-        check('title', 'Please enter a valid title.')
+        check('name', 'Please enter a valid recipe name.')
             .isLength({min: 3})
             .trim(),
-        check('publisher', 'Please enter a valid publisher.')
-            .isLength({min: 3})
-            .trim(),
-        check('developer', 'Please enter a valid developer.')
-            .isLength({min: 3})
-            .trim(),
-        check('esrb', 'Please enter a valid ESRB.')
-            .isAlphanumeric(),
-        check('imageUrl', 'Please enter a valid URL.')
-            .isURL(),
-        check('price', 'Please enter a valid price.')
-            .isFloat(),
-        check('description', 'Please enter a valid description.')
+        check('instruction', 'Please enter a valid instruction.')
             .isLength({min: 8})
             .trim()
     ], 
@@ -42,22 +30,10 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 
 router.post('/edit-product', isAuth,
     [
-        check('title', 'Please enter a valid title.')
+        check('name', 'Please enter a valid name.')
             .isLength({min: 3})
             .trim(),
-        check('publisher', 'Please enter a valid publisher.')
-            .isLength({min: 3})
-            .trim(),
-        check('developer', 'Please enter a valid developer.')
-            .isLength({min: 3})
-            .trim(),
-        check('esrb', 'Please enter a valid ESRB.')
-            .isAlphanumeric(),
-        check('imageUrl', 'Please enter a valid URL.')
-            .isURL(),
-        check('price', 'Please enter a valid price.')
-            .isFloat(),
-        check('description', 'Please enter a valid description.')
+        check('instruction', 'Please enter a valid instruction.')
             .isLength({min: 8})
             .trim()
     ],   

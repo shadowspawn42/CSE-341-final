@@ -62,7 +62,7 @@ const routes = require('./routes');
 
 
 
-app.use(bodyParser({extended: false}));
+app.use(bodyParser({extended: true}));
 
 app.use(session({secret: "my secret", resave: false, saveUninitialized: false, store: store}));
 

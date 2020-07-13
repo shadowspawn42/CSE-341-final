@@ -2,6 +2,35 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="../../../../../public/scripts/example.js" language="Javascript" type="text/javascript"></script>
+    <script>
+        var counter = 1;
+
+        var limit = 8;
+
+        function addInput(divName, ingred){
+
+            if (counter == limit)  {
+
+                alert("You have reached the limit of adding " + counter + " inputs");
+
+            }
+
+            else {
+
+                var newdiv = document.createElement('div');
+
+                newdiv.innerHTML = "<input type='text' value='Ingredent' size='50' name='ingredent[]'><br><br>";
+
+                document.getElementById(divName).appendChild(newdiv);
+
+                counter++;
+
+            }
+
+        }
+
+    </script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
     <link rel="stylesheet" href="/stylesheets/prove04/forms.css">
     <link rel="stylesheet" href="/stylesheets/prove04/product.css">
@@ -16,44 +45,14 @@
         <% } %>
         <form class=" text-center" action="/proveAssignments/prove04/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
             <div >
-                <label for="title">Title</label><br>
+                <label for="name">Name of Recipe</label><br>
                 <input 
-                    class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>"
+                    class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid' : '' %>"
                     type="text" 
                     size="50" 
-                    name="title" 
-                    id="title" 
-                    value="<% if (editing || hasError) { %><%= product.title %><% } %>">
-            </div><br>
-            <div >
-                <label for="publisher">Publisher</label><br>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'publisher') ? 'invalid' : '' %>"
-                    type="text" 
-                    size="50" 
-                    name="publisher" 
-                    id="publisher" 
-                    value="<% if (editing || hasError) { %><%= product.publisher %><% } %>">
-            </div><br>
-            <div >
-                <label for="developer">Developer</label><br>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'developer') ? 'invalid' : '' %>"
-                    type="text" 
-                    size="50" 
-                    name="developer" 
-                    id="developer" 
-                    value="<% if (editing || hasError) { %><%= product.developer %><% } %>">
-            </div><br>
-            <div >
-                <label for="esrb">ESRB</label><br>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'esrb') ? 'invalid' : '' %>"
-                    type="text" 
-                    size="50" 
-                    name="esrb"
-                    id="esrb" 
-                    value="<% if (editing || hasError) { %><%= product.esrb %><% } %>">
+                    name="name" 
+                    id="name" 
+                    value="<% if (editing || hasError) { %><%= product.name %><% } %>">
             </div><br>
             <div >
                 <label for="imageUrl">Image URL</label><br>
@@ -65,34 +64,55 @@
                     id="imageUrl" 
                     value="<% if (editing || hasError) { %><%= product.imageUrl %><% } %>">
             </div><br>
-            <div >
-                <label for="price">Price</label><br>
+            <% if (!editing) { %> 
+            <div id="ingredent">
+                <label for="ingredent">Ingredients</label><br>
                 <input 
-                    class="<%= validationErrors.find(e => e.param === 'price') ? 'invalid' : '' %>"
-                    type="number" 
+                    class="<%= validationErrors.find(e => e.param === 'ingredent') ? 'invalid' : '' %>"
+                    type="text" 
                     size="50" 
-                    name="price" 
-                    id="price" 
-                    step="0.01" 
-                    value="<% if (editing || hasError) { %><%= product.price %><% } %>">
+                    name="ingredent[]" 
+                    id="ingredents[]" 
+                    value="<% if (editing || hasError) { %><%= product.ingredent[0] %><% } %>"><br><br>
+            </div><br>
+            <% } else { %>
+                <div id="ingredent">
+                    <label for="ingredent">Ingredients</label><br>
+                <% for (let ingred of product.ingredent) { %>
+                    
+                        <input 
+                            class="<%= validationErrors.find(e => e.param === 'ingredent') ? 'invalid' : '' %>"
+                            type="text" 
+                            size="50" 
+                            name="ingredent[]" 
+                            id="ingredents[]" 
+                            value="<% if (editing || hasError) { %><%= ingred %><% } %>"><br><br>
+               <% } %>
+               </div>
+                <% } %>
+
+            <input class="btn product-form" type="button" id="moreIngred" value="Add another ingredent" onClick="addInput('ingredent');">
+            <div>
+                <label for="time">Total Time</label><br>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'time') ? 'invalid' : '' %>"
+                    type="text" 
+                    size="50" 
+                    name="time" 
+                    id="time" 
+                    value="<% if (editing || hasError) { %><%= product.totalTime %><% } %>">
             </div><br>
             <div >
-                <label for="description">Description</label><br>
+                <label for="instruction">Recipe instructions</label><br>
                 <textarea 
                     class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %>"
-                    name="description" 
+                    name="instruction" 
                     cols="50" 
-                    id="description" 
-                    rows="5"><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
+                    id="instruction" 
+                    rows="5"><% if (editing || hasError) { %><%= product.instruction %><% } %></textarea>
             </div><br>
             <% if (editing) { %>
                 <input type="hidden" value="<%= product._id %>" name="productId">
-                <div class="text-center">
-                    <input type="radio" id="inStock" name="inStock" value="inStock">
-                    <label for="inStock">In Stock</label>
-                    <input type="radio" id="outStock" name="outStock" value="outOfStock">
-                    <label for="outStock">Out of Stock</label>
-                </div>
             <% } %>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn product-form" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>

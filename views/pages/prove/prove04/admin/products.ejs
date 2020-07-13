@@ -16,18 +16,18 @@
                             <article class="card product-item">
                                 <header class="card__header">
                                     <h3 style="text-align: center;">
-                                        <%= product.title %>
+                                        <%= product.name %>
                                     </h1>
                                 </header>
                                 <div class="card__image">
                                     <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
                                 </div>
                                 <div class="card__content">
-                                    <h2 class="product__price">$
-                                        <%= product.price %>
+                                    <h2 class="product__price">Total time: <br>
+                                        <%= product.totalTime %>
                                     </h2>
                                     <p class="product__description">
-                                        <%= product.description %>
+                                        <%= product.instruction %>
                                     </p>
                                 </div>
                                 <div class="card__actions">
@@ -41,6 +41,23 @@
                                 </div>
                             </article>
                             <% } %>
+                    </div>
+                    <div class="text-center">
+                        <section class="pagination">
+                            <% if (currentPage !== 1 && previousPage !== 1) { %>
+                                <a href="?page=1">1</a>
+                            <% } %>
+                            <% if (hasPreviousPage) { %>
+                                <a href="?page=<%= previousPage %>"><%= previousPage %></a>
+                            <% } %>
+                            <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+                            <% if (hasNextPage) { %>
+                                <a href="?page=<%= nextPage %>"><%= nextPage %></a>
+                            <% } %>
+                            <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+                                <a href="?page=<%= lastPage %>"><%= lastPage %></a>
+                            <% } %>
+                        </section>
                     </div>
                     <% } else { %>
                         <h1>No Recipes Found!</h1>
