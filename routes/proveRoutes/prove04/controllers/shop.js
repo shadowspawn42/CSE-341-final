@@ -37,10 +37,12 @@ exports.getProducts = (req, res, next) => {
     });
 };
 
-exports.postProducts = (req, res, next) => {
+exports.getSearch = (req, res, next) => {
   const searchIngred = req.query.ingredient;
 
-  const regex = new RegExp(escapeRegex(req.body.ingredient), 'gi');
+  console.log(searchIngred);
+
+  const regex = new RegExp(escapeRegex(req.query.ingredient), 'gi');
 
   console.log(regex);
 
@@ -52,21 +54,21 @@ exports.postProducts = (req, res, next) => {
       totalItems = numRecipes;
       console.log(totalItems);
       return Product.find({ingredent: regex})
-        .skip((page - 1) * RECIPES_PER_PAGE)
-        .limit(RECIPES_PER_PAGE);
+        .skip((page - 1) * 6)
+        .limit(6);
     })
     .then(products => {
-      res.render('pages/prove/prove04/shop/product-list', {
+      res.render('pages/prove/prove04/shop/search', {
         prods: products,
         pageTitle: 'All Products',
         path: '/products',
         isAuthenticated: req.session.isLoggedIn,
         currentPage: page,
-        hasNextPage: RECIPES_PER_PAGE * page < totalItems,
+        hasNextPage: 6 * page < totalItems,
         hasPreviousPage: page > 1,
         nextPage: page + 1,
         previousPage: page - 1,
-        lastPage: Math.ceil(totalItems / RECIPES_PER_PAGE)
+        lastPage: Math.ceil(totalItems / 6)
       });
     })
     .catch(err => {

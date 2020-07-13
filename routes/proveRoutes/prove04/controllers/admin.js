@@ -98,7 +98,7 @@ exports.postEditProduct = (req, res, next) => {
         path: '/admin/add-product',
         editing: true,
         errorMessage: errors.array()[0].msg,
-        product: {name: updatedName, totalTime: updatedTime, instruction: updatedInstruc, ingredent: updatedIngredents, _id: prodId},
+        product: {name: updatedName, totalTime: updatedTime, imageUrl: updatedImageUrl, instruction: updatedInstruc, ingredent: updatedIngredents, _id: prodId},
         hasError: true,
         validationErrors: errors.array()
       });
@@ -161,11 +161,17 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findByIdAndRemove(prodId)
-    .then(() => {
+  Product.findById(prodId)
+    .then(product => {
       if (product.userId.toString() !== req.user._id.toString()) {
-        return res.redirect('/');
+      return res.redirect('/');
       }
+      if (!product) {
+        return next(new Error('Product not found.'));
+      }
+      return Product.deleteOne({ _id: prodId, userId: req.user._id });
+    })
+    .then(() => {
       console.log('DESTROYED PRODUCT');
       res.redirect('products');
     })
@@ -175,3 +181,23 @@ exports.postDeleteProduct = (req, res, next) => {
       return next(error);
     });
 };
+
+// exports.postDeleteProduct = (req, res, next) => {
+//   Product.findById(req.body.productId)
+//     .then((product) =>{
+//       if (product.userId.toString() !== req.user._id.toString()) {
+//         return res.redirect('/');
+//       }
+//     });
+//   const prodId = req.body.productId;
+//   Product.findByIdAndRemove(prodId)
+//     .then(() => {
+//       console.log('DESTROYED PRODUCT');
+//       res.redirect('products');
+//     })
+//     .catch(err => {
+//       const error = new Error(err);
+//       error.httpStatusCode = 500;
+//       return next(error);
+//     });
+// };

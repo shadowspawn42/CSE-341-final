@@ -17,9 +17,11 @@ router.get('/products', isAuth, adminController.getProducts);
 // /admin/add-product => POST
 router.post('/add-product', isAuth, 
     [
-        check('name', 'Please enter a valid recipe name.')
+        check('name', 'Please enter a valid name.')
             .isLength({min: 3})
             .trim(),
+        check('time', 'Please enter a valid time')
+            .isLength({min: 3}),
         check('instruction', 'Please enter a valid instruction.')
             .isLength({min: 8})
             .trim()
@@ -33,6 +35,8 @@ router.post('/edit-product', isAuth,
         check('name', 'Please enter a valid name.')
             .isLength({min: 3})
             .trim(),
+        check('time', 'Please enter a valid time')
+            .isLength({min: 3}),
         check('instruction', 'Please enter a valid instruction.')
             .isLength({min: 8})
             .trim()
